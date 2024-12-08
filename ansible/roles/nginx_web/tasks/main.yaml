@@ -1,0 +1,18 @@
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+  become: true
+
+- name: Create index.html
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+  become: true
+
+- name: Ensure Nginx is running
+  service:
+    name: nginx
+    state: started
+    enabled: true
+  become: true

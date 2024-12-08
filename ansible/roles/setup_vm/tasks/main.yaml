@@ -1,0 +1,18 @@
+- name: Change hostname
+  shell: "echo {{ inventory_hostname }} > /etc/hostname"
+  when: inventory_hostname != ansible_hostname
+  become: true
+
+- name: Install standard packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - net-tools
+    - dnsutils
+    - wget
+    - curl
+    - mc
+    - rsync
+  become: true

@@ -1,0 +1,27 @@
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+  become: true
+
+- name: Configure Nginx for proxy pass
+  template:
+    src: proxy.conf.j2
+    dest: /etc/nginx/sites-available/proxy.conf
+  become: true
+
+- name: Ensure symbolic link to proxy configuration exists
+  file:
+    path: /etc/nginx/sites-enabled/proxy.conf
+    state: absent
+  become: true
+
+- name: Enable proxy configuration
+  command: ln -s /etc/nginx/sites-available/proxy.conf /etc/nginx/sites-enabled/
+  become: true
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
+  become: true
